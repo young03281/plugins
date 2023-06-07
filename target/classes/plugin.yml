@@ -1,0 +1,16 @@
+name: plugins
+version: '1.0-SNAPSHOT'
+main: org.plugin.plugin.Plugins
+api-version: 1.19
+
+commands:
+  die:
+    description: die bitch
+  cor:
+    description: cor for all players
+
+permissions:
+  plugin.cantMove:
+    description: cant move
+  plugin.can_add_cor:
+    description: add cor

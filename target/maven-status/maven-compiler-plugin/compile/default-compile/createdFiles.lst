@@ -1,0 +1,7 @@
+org\plugin\plugin\event\Player_Join_and_Leave.class
+org\plugin\plugin\commands\cor.class
+org\plugin\plugin\db\ConnectSQL.class
+org\plugin\plugin\Plugins.class
+org\plugin\plugin\commands\Die.class
+org\plugin\plugin\db\models\Stats.class
+org\plugin\plugin\event\PlayerMove.class
