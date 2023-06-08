@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Player_Join_and_Leave implements Listener{
 
-    private Boolean kicked;
+    private Boolean kicked = false;
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
