@@ -1,4 +1,4 @@
-package org.plugin.plugin.event;
+package org.plugin.plugin.Listener;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

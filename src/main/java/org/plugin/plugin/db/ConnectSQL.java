@@ -1,13 +1,23 @@
 package org.plugin.plugin.db;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import org.bukkit.entity.Player;
+import org.plugin.plugin.Plugins;
+import org.plugin.plugin.db.models.PlayerStats;
+
+import java.sql.*;
+import java.util.Date;
+
 
 public class ConnectSQL {
 
+    private Plugins plugin;
     private Connection connection;
+    public ConnectSQL(Plugins plugin){
+        this.plugin = plugin;
+    }
+    public ConnectSQL(){
+
+    }
     public Connection getConnection() throws SQLException{
 
         if(connection != null){
@@ -28,10 +38,10 @@ public class ConnectSQL {
         }
         return this.connection;
     }
-    public void createStats() throws SQLException{
-        try{
+    public void createStats() throws SQLException {
+        try {
             Statement statement = getConnection().createStatement();
-            String player_stats = "CREATE TABLE IF NOT EXISTS player_stats(uuid varchar(40) primary key, deaths int, kills int, BlocksBroken int, LastLogin DATE)";
+            String player_stats = "CREATE TABLE IF NOT EXISTS player_stats(name varchar(50) ,uuid varchar(40) primary key, deaths int, kills int, BlocksBroken int, LastLogin DATE)";
             String cor = "CREATE TABLE IF NOT EXISTS coordinates(place varchar(100) primary key, x double, y double, z double)";
             statement.execute(player_stats);
             statement.execute(cor);
@@ -40,11 +50,87 @@ public class ConnectSQL {
 
             System.out.println("success to create table");
 
-        }catch(SQLException e){
+        } catch (SQLException e) {
             System.out.println("unable to create table");
 
             e.printStackTrace();
         }
     }
+
+    public PlayerStats findPlayerByUUID(String uuid) throws SQLException {
+
+        PreparedStatement statement = getConnection().
+                prepareStatement("SELECT * FROM player_stats WHERE uuid = ?");
+        statement.setString(1, uuid);
+        ResultSet result = statement.executeQuery();
+
+        while(result.next()){
+
+            String name = result.getString("name");
+            int death = result.getInt("deaths");
+            int kills = result.getInt("kills");
+            long BlocksBroken = result.getLong("BlocksBroken");
+            Date LastLogin = result.getDate("LastLogin");
+
+            PlayerStats playerStats = new PlayerStats(name, uuid, death, kills, BlocksBroken, LastLogin);
+
+            statement.close();
+
+            return playerStats;
+        }
+
+        statement.close();
+        return null;
+
+    }
+
+    public void createPlayerStats(PlayerStats stats) throws SQLException{
+
+
+        PreparedStatement preparedStatement = getConnection().
+                prepareStatement("INSERT INTO player_stats(name, uuid, deaths, kills, BlocksBroken, LastLogin) VALUES (?, ?, ?, ?, ?, ?)");
+        preparedStatement.setString(1, stats.getName());
+        preparedStatement.setString(2, stats.getUuid());
+        preparedStatement.setInt(3, stats.getDeaths());
+        preparedStatement.setInt(4, stats.getKills());
+        preparedStatement.setLong(5, stats.getBlocksBroken());
+        preparedStatement.setDate(6, new java.sql.Date(stats.getLastLogin().getDate()));
+
+        preparedStatement.executeUpdate();
+        preparedStatement.close();
+    }
+
+    public void updatePlayerStats(PlayerStats stats) throws SQLException{
+
+
+        PreparedStatement preparedStatement = getConnection().
+                prepareStatement("UPDATE player_stats Set name = ?, deaths = ?, kills = ?, BlocksBroken = ?, LastLogin = ? WHERE uuid = ?");
+        preparedStatement.setString(1, stats.getName());
+        preparedStatement.setInt(2, stats.getDeaths());
+        preparedStatement.setInt(3, stats.getKills());
+        preparedStatement.setLong(4, stats.getBlocksBroken());
+        preparedStatement.setDate(5, new java.sql.Date(stats.getLastLogin().getDate()));
+        preparedStatement.setString(6, stats.getUuid());
+
+        preparedStatement.executeUpdate();
+
+        preparedStatement.close();
+    }
+
+    public PlayerStats getPlayerStatsFromDataBase(Player p, Plugins plugin) throws SQLException{
+
+        PlayerStats stats = plugin.getDatabase().findPlayerByUUID(p.getUniqueId().toString());
+
+        if(stats == null) {
+
+            stats = new PlayerStats(p.getDisplayName(), p.getUniqueId().toString(), 0, 0, 0, new Date());
+
+            plugin.getDatabase().createPlayerStats(stats);
+
+        }
+
+        return stats;
+    }
+
 
 }
