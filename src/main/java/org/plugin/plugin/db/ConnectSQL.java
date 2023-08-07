@@ -1,39 +1,56 @@
 package org.plugin.plugin.db;
 
 import org.bukkit.entity.Player;
-import org.plugin.plugin.Plugins;
+import org.plugin.plugin.Plugin;
 import org.plugin.plugin.db.models.PlayerStats;
 
 import java.sql.*;
-import java.util.Date;
+import java.util.Calendar;
 
 
 public class ConnectSQL {
 
-    private Plugins plugin;
     private Connection connection;
-    public ConnectSQL(Plugins plugin){
-        this.plugin = plugin;
+
+    public ConnectSQL(Plugin plugin){
     }
     public ConnectSQL(){
 
     }
-    public Connection getConnection() throws SQLException{
+    public Connection getConnection() throws SQLException {
 
-        if(connection != null){
+        if (connection != null) {
             return connection;
         }
 
-        String url = "jdbc:mysql://localhost/data";
+        String url = "jdbc:mysql://localhost:3306";
+        String DBurl = "jdbc:mysql://localhost:3306/minecraft_data";
         String user = "root";
-        String pwd = "";
+        String pwd = "11220328";
 
         try {
             this.connection = DriverManager.getConnection(url, user, pwd);
-
-            System.out.println("Connected");
+            System.out.println("Connected to mysql");
+            try {
+                this.connection = DriverManager.getConnection(DBurl, user, pwd);
+                System.out.println("Connected to database");
+            } catch (SQLException ee) {
+                System.out.println("cant connect to DB");
+                try {
+                    this.connection = DriverManager.getConnection(url, user, pwd);
+                    Statement statement = this.connection.createStatement();
+                    String CreateDatabase = "CREATE DATABASE IF NOT EXISTS minecraft_data";
+                    statement.execute(CreateDatabase);
+                    statement.close();
+                    this.connection = DriverManager.getConnection(DBurl, user, pwd);
+                    System.out.println("Connected and created the database");
+                } catch (SQLException eee) {
+                    System.out.println("can't create");
+                    eee.printStackTrace();
+                }
+            }
         } catch (SQLException e) {
-            System.out.println("can't connect");
+            System.out.println("can't connect to mysql");
             e.printStackTrace();
         }
         return this.connection;
@@ -70,7 +87,8 @@ public class ConnectSQL {
             int death = result.getInt("deaths");
             int kills = result.getInt("kills");
             long BlocksBroken = result.getLong("BlocksBroken");
-            Date LastLogin = result.getDate("LastLogin");
+            Calendar LastLogin = Calendar.getInstance();
+            LastLogin.setTime(result.getDate("LastLogin"));
 
             PlayerStats playerStats = new PlayerStats(name, uuid, death, kills, BlocksBroken, LastLogin);
 
@@ -94,7 +112,7 @@ public class ConnectSQL {
         preparedStatement.setInt(3, stats.getDeaths());
         preparedStatement.setInt(4, stats.getKills());
         preparedStatement.setLong(5, stats.getBlocksBroken());
-        preparedStatement.setDate(6, new java.sql.Date(stats.getLastLogin().getDate()));
+        preparedStatement.setDate(6, new java.sql.Date(stats.getLastLogin().getTime().getTime()));
 
         preparedStatement.executeUpdate();
         preparedStatement.close();
@@ -109,7 +127,7 @@ public class ConnectSQL {
         preparedStatement.setInt(2, stats.getDeaths());
         preparedStatement.setInt(3, stats.getKills());
         preparedStatement.setLong(4, stats.getBlocksBroken());
-        preparedStatement.setDate(5, new java.sql.Date(stats.getLastLogin().getDate()));
+        preparedStatement.setDate(5, new java.sql.Date(stats.getLastLogin().getTime().getTime()));
         preparedStatement.setString(6, stats.getUuid());
 
         preparedStatement.executeUpdate();
@@ -117,13 +135,14 @@ public class ConnectSQL {
         preparedStatement.close();
     }
 
-    public PlayerStats getPlayerStatsFromDataBase(Player p, Plugins plugin) throws SQLException{
+    public PlayerStats getPlayerStatsFromDataBase(Player p, Plugin plugin) throws SQLException{
 
         PlayerStats stats = plugin.getDatabase().findPlayerByUUID(p.getUniqueId().toString());
 
         if(stats == null) {
 
-            stats = new PlayerStats(p.getDisplayName(), p.getUniqueId().toString(), 0, 0, 0, new Date());
+            stats = new PlayerStats(p.getDisplayName(), p.getUniqueId().toString(), 0, 0, 0, Calendar.getInstance()
+            );
 
             plugin.getDatabase().createPlayerStats(stats);
 

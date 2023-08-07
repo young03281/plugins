@@ -8,7 +8,9 @@ import org.plugin.plugin.Listener.PlayerMove;
 import org.plugin.plugin.Listener.Player_Join_and_Leave;
 import org.plugin.plugin.db.ConnectSQL;
 
-public final class Plugins extends JavaPlugin {
+import java.util.Objects;
+
+public final class Plugin extends JavaPlugin {
 
 
     private ConnectSQL database;
@@ -17,11 +19,11 @@ public final class Plugins extends JavaPlugin {
 
 
         getServer().getPluginManager().registerEvents(new PlayerMove(), this);
-        getServer().getPluginManager().registerEvents(new Player_Join_and_Leave(), this);
+        getServer().getPluginManager().registerEvents(new Player_Join_and_Leave(this), this);
         getServer().getPluginManager().registerEvents(new BlocksBreak(this), this);
 
-        getCommand("die").setExecutor(new Die());
-        getCommand("cor").setExecutor(new cor());
+        Objects.requireNonNull(getCommand("die")).setExecutor(new Die());
+        Objects.requireNonNull(getCommand("cor")).setExecutor(new cor());
 
 
         try {

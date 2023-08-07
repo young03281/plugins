@@ -1,5 +1,6 @@
 package org.plugin.plugin.db.models;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class PlayerStats {
@@ -9,7 +10,7 @@ public class PlayerStats {
     private int deaths;
     private int kills;
     private long blocksBroken;
-    private Date LastLogin;
+    private Calendar LastLogin;
 
     public void setName(String name) {
         this.name = name;
@@ -31,7 +32,7 @@ public class PlayerStats {
         this.blocksBroken = blocksBroken;
     }
 
-    public void setLastLogin(Date lastLogin) {
+    public void setLastLogin(Calendar lastLogin) {
         LastLogin = lastLogin;
     }
 
@@ -55,12 +56,12 @@ public class PlayerStats {
         return blocksBroken;
     }
 
-    public Date getLastLogin() {
+    public Calendar getLastLogin() {
         return LastLogin;
     }
 
 
-    public PlayerStats(String name, String uuid, int deaths, int kills, long blocksBroken, Date lastLogin) {
+    public PlayerStats(String name, String uuid, int deaths, int kills, long blocksBroken, Calendar lastLogin) {
         this.name = name;
         this.uuid = uuid;
         this.deaths = deaths;
