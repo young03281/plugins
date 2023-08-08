@@ -1,8 +1,11 @@
 org\plugin\plugin\Listener\Player_Join_and_Leave.class
+org\plugin\plugin\db\ConnectSQL.class
+org\plugin\plugin\commands\Die.class
+org\plugin\plugin\commands\ItemTab.class
+org\plugin\plugin\Plugin.class
+org\plugin\plugin\utils\Kevin.class
 org\plugin\plugin\commands\cor.class
 org\plugin\plugin\db\models\PlayerStats.class
-org\plugin\plugin\db\ConnectSQL.class
 org\plugin\plugin\Listener\PlayerMove.class
-org\plugin\plugin\commands\Die.class
+org\plugin\plugin\commands\giveItem.class
 org\plugin\plugin\Listener\BlocksBreak.class
-org\plugin\plugin\Plugin.class

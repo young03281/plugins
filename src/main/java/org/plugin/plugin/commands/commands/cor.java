@@ -1,4 +1,4 @@
-package org.plugin.plugin.commands;
+package org.plugin.plugin.commands.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -34,7 +34,7 @@ public class cor implements CommandExecutor {
                 commandSender.sendMessage(ChatColor.AQUA + a.getDisplayName() + ChatColor.GOLD + "(" + Objects.requireNonNull(Al.getWorld()).getName() + ")" + ChatColor.RESET + ":" + x + " " + y + " " + z);
             }
         }else{
-            if(s.equalsIgnoreCase("add")){
+            if(strings[1].equalsIgnoreCase("add")){
                 if(commandSender instanceof Player){
                     Player player = (Player) commandSender;
                     if(!player.hasPermission("plugin.can_add_cor")){

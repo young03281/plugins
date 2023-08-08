@@ -1,4 +1,4 @@
-package org.plugin.plugin.commands;
+package org.plugin.plugin.commands.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Server;

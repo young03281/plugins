@@ -24,14 +24,16 @@ public class Player_Join_and_Leave implements Listener{
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) throws SQLException {
         event.setJoinMessage(ChatColor.YELLOW +event.getPlayer().getDisplayName()+"幹不要再進來了我記憶體要爆了");
-        ConnectSQL sql = new ConnectSQL(this.plugin);
+        ConnectSQL sql = new ConnectSQL();
         PlayerStats stats = sql.getPlayerStatsFromDataBase(event.getPlayer(), this.plugin);
         stats.setLastLogin(Calendar.getInstance());
+        stats.setName(event.getPlayer().getDisplayName());
     }
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event) {
         if (kicked) {
+            return;
         } else {
             event.setQuitMessage(ChatColor.YELLOW + event.getPlayer().getDisplayName() + "死好滾");
         }

@@ -8,9 +8,16 @@ commands:
     description: die bitch
   cor:
     description: cor for all players
+  giveitem:
+    description: give special item
+    usage: /giveitem <item> <player>
+
 
 permissions:
   plugin.canMove:
     description: cant move
+    default: true
   plugin.can_add_cor:
     description: add cor
+  plugin.CanUseGive:
+    description: can use giveitem

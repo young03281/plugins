@@ -12,8 +12,6 @@ public class ConnectSQL {
 
     private Connection connection;
 
-    public ConnectSQL(Plugin plugin){
-    }
     public ConnectSQL(){
 
     }
