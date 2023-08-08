@@ -32,7 +32,7 @@ public final class Plugin extends JavaPlugin {
 
 
         try {
-            this.database = new ConnectSQL(this);
+            this.database = new ConnectSQL();
             database.createStats();
         }catch(Exception ex){
             System.out.println("failed");

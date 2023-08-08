@@ -14,6 +14,7 @@ public class Kevin {
     public static ItemStack createKevin(){
         ItemStack kevin = new ItemStack(Material.DIAMOND_SWORD, 1);
         ItemMeta meta = kevin.getItemMeta();
+        assert meta != null;
         meta.setDisplayName(ChatColor.AQUA + "" +  ChatColor.BOLD + ChatColor.ITALIC + " 　Kevin Killer");
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.YELLOW + "　　賤民要有一把劍");
@@ -23,8 +24,8 @@ public class Kevin {
         meta.addEnchant(Enchantment.LOOT_BONUS_MOBS, 32767, true);
         meta.addEnchant(Enchantment.KNOCKBACK, 32767, true);
         meta.setLocalizedName("kevin_killer");
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         kevin.setItemMeta(meta);
 
         return kevin;

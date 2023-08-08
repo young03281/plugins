@@ -21,8 +21,8 @@ public class ConnectSQL {
             return connection;
         }
 
-        String url = "jdbc:mysql://localhost:3306";
-        String DBurl = "jdbc:mysql://localhost:3306/minecraft_data";
+        String url = "jdbc:mysql+srv://_mysql._tcp.mysql.young922.com";
+        String DBurl = "jdbc:mysql+srv://_mysql._tcp.mysql.young922.com/minecraft_data";
         String user = "root";
         String pwd = "11220328";
 
